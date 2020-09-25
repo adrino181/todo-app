@@ -1,60 +1,51 @@
-import React from 'react';
-import './App.css';
+import React, {useState} from 'react';
 import {Container, Col , Row, Form, Button} from 'react-bootstrap'
+import CreateTask from './components/CreateTask'
+import TaskViewer from './components/TaskViewer'
 
-
-
-const CreateTask = () => {
-  return <div>
-        <h2>Add task</h2>
-        <div>
-          <Form>
-            <Form.Group controlId="taskName">
-            <Form.Label>Name</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
-              <Form.Text className="text-muted">
-                We'll never share your email with anyone else.
-              </Form.Text>
-            </Form.Group>
-
-            <Form.Group controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
-            </Form.Group>
-            <Form.Group controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-            Submit
-            </Button>
-          </Form>
-        </div>
-  </div>
-}
-
-const TaskViewer = () => {
-  return <div>Tasks to show</div>
-}
 
 class MainList extends React.Component{
   constructor(props) {
    super(props);
    this.state = {
-     todo:[]
-   };
+     todo:[],
+     todoObj:{
+       name:'',
+       date:'',
+       time:'',
+       remind:'',
+       classify:'',
+     }
+   }
+   this.removeTask = this.removeTask.bind(this)
  }
+
+ addTask = (task) => {
+   this.setState({todo:[...this.state.todo, task]})
+ }
+
+ removeTask = (taskId) => {
+    const tasks = this.state.todo.filter(item => item.taskId !== taskId)
+    this.setState({todo:tasks})
+ }
+
+ editTask = (taskId) => {
+
+ }
+
+
   render(){
     return <main>
-    <h1 className="text-center">MY TODO</h1>
+      <h1 className="text-center">MY TODO</h1>
       <Container>
         <Row>
           <Col>
-            <TaskViewer />
+            <TaskViewer todo={this.state.todo} removeTask={this.removeTask} editTask={this.editTask} />
           </Col>
           <Col>
-            <CreateTask />
+            <CreateTask addTask={this.addTask} todoObj={this.state.todoObj}/>
           </Col>
-        </Row>
+         </Row>
       </Container>
      </main>;
   }
